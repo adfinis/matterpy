@@ -4,3 +4,4 @@
 *.pyc
 .python-version
 *.egg-info
+matterpy.ini

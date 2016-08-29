@@ -74,3 +74,31 @@ The callback function will receive the full mattermost message as a dict, and a
        text = msg['text']
        text = text.replace("\n", "\n> ")
        await reply("Got your message:\n\n > %s\n" % text)
+
+
+Echo Plugin
+~~~~~~~~~~~
+
+Replies with a quote of what has just been said. Pretty useless, except for
+testing and to show as an example. See above for the source :)
+
+
+Redmine Plugin
+~~~~~~~~~~~~~~
+
+
+Redmine integration - Show issue details when an issue is mentioned.
+
+Trigger words are: "redmine#1234" or "rm#1234" (the hash sign is optional,
+spaces are allowd).
+
+The configuration takes the following keys:
+
+.. code:: ini
+
+   [plugin matterpy.contrib.redmine]
+   redmine_username = api_username
+   redmine_password = y0urp@ssw0rd
+   api_key = oeruilsdfioauseroiusfsf
+
+   url     = https://base.url.of.your.redmine
