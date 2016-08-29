@@ -12,4 +12,4 @@ def init(manager, conf):
 async def handle_msg(msg, reply):
     text = msg['text']
     text = text.replace("\n", "\n> ")
-    await reply("Got your message:\n %s" % text)
+    await reply("Got your message:\n\n > %s\n" % text)
