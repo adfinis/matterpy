@@ -1,0 +1,6 @@
+.*.swp
+.*.swo
+*.pyo
+*.pyc
+.python-version
+*.egg-info
