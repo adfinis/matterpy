@@ -13,9 +13,9 @@ Configuration
 The configuration is done via .ini file. There are several locations where matterpy looks
 for a configuration:
 
-  * /etc/matterpy.ini
-  * $HOME/config/matterpy/matterpy.ini
-  * matterpy.ini (local to where you start matterpy)
+* /etc/matterpy.ini
+* $HOME/config/matterpy/matterpy.ini
+* matterpy.ini (local to where you start matterpy)
 
 All those files are parsed (if they exist). If a specific config is not found
 in one of them, then the next file is checked, and so on.
