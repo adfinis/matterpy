@@ -2,6 +2,8 @@
 Matterpy - A simple python mattermost bot
 =========================================
 
+.. image:: https://img.shields.io/github/license/adfinis-sygroup/matterpy.svg?maxAge=2592000
+
 This bot is purely based on python 3.5 asyncio. All functionality is provided by plugins.
 
 
