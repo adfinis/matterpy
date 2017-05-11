@@ -104,3 +104,23 @@ The configuration takes the following keys:
    api_key = oeruilsdfioauseroiusfsf
 
    url     = https://base.url.of.your.redmine
+
+
+Jira Plugin (Experimental)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upon mention of a Jira issue (such as FOO-123), queries Jira and displays details about
+the given ticket.
+
+REquires the following config:
+
+.. code:: ini
+
+    [plugin matterpy.contrib.jira]
+    
+    base_url = http://url.to.your.jira
+    
+    auth = basic
+    
+    user = jira_username
+    pass = jira_password
