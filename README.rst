@@ -124,3 +124,5 @@ REquires the following config:
     
     user = jira_username
     pass = jira_password
+
+Note that this plugin is still WIP. I still need to convert the title into a link and convert the description body from textile into markdown (or devise some other plan to handle it). Also, possibly tons of stabilisation etc.
