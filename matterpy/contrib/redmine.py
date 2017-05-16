@@ -22,6 +22,8 @@ The configuration takes the following keys:
 from aiohttp import ClientSession, BasicAuth
 import re
 
+from matterpy.helpers.textformat import textile_to_markdown
+
 _conf = None
 
 
@@ -91,11 +93,3 @@ def issue_to_text(issue):
     heading_line = '**[#%s - %s](%s)**\n\n' % (id_, subj, issue_url)
 
     return "%s\n\n%s" % (heading_line, body)
-
-
-def textile_to_markdown(text):
-    text = text.replace('^h1', '#')
-    text = text.replace('^h2', '##')
-    text = text.replace('^h3', '###')
-    text = text.replace('^h4', '####')
-    return text
