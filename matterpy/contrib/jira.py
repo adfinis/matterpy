@@ -6,6 +6,8 @@ import base64
 import asyncio
 from aiohttp import ClientSession
 
+from matterpy.helpers.textformat import textile_to_markdown
+
 _conf = None
 
 def init(manager, conf):
@@ -18,32 +20,23 @@ def init(manager, conf):
 
 async def jira_info(ticket_id):
     auth_token = '%s:%s' % (_conf['user'], _conf['pass'])
-    print("__auth_token: %s" % auth_token)
     jira_header = {
        'Authorization': 'Basic %s' % base64.b64encode(auth_token.encode('utf-8')).decode('ascii'),
        'Content-Type':  'application/json'
     }
-    print("__hdr: %s" % jira_header)
 
     async with ClientSession() as session:
         info = await session.get(
             '%s/rest/api/2/issue/%s' % (_conf['base_url'], ticket_id),
             headers=jira_header,
         )
-        print(
-            'REQUEST URL: %s/rest/api/2/issue/%s' % (_conf['base_url'], ticket_id),
-        )
-        print(
-            'REQUEST HEADERS: %s' % jira_header,
-        )
 
         data = await info.json()
-        print(data)
         if 'key' not in data:
             return None
         summary = data['fields']['summary']
-        body    = data['fields']['description']
-        return "## {summary}\n{description}\n".format(**data['fields'])
+        body    = textile_to_markdown(data['fields']['description'])
+        return "## {summary}\n{body}\n".format(summary=summary, body=body)
 
 
 
