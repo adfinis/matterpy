@@ -4,6 +4,7 @@ from aiohttp import ClientSession
 import json
 from functools import partial
 import importlib
+import asyncio
 
 
 class Manager():
@@ -21,7 +22,11 @@ class Manager():
         try:
             print("Initializing module %s" % name)
             mod = importlib.import_module(name)
-            mod.init(self, plugin_conf)
+            if hasattr(mod, 'init'):
+                mod.init(self, plugin_conf)
+            elif hasattr(mod, 'ainit'):
+                loop = asyncio.get_event_loop()
+                loop.call_soon(mod.ainit)
         except Exception as exc:
             print("Error during module init: %s" % str(exc))
 
