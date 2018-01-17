@@ -26,7 +26,7 @@ class Manager():
                 mod.init(self, plugin_conf)
             elif hasattr(mod, 'ainit'):
                 loop = asyncio.get_event_loop()
-                loop.call_soon(mod.ainit)
+                loop.call_soon(mod.ainit, self, plugin_conf)
         except Exception as exc:
             print("Error during module init: %s" % str(exc))
 
