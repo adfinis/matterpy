@@ -24,4 +24,3 @@ async def do_count():
         await _mgr.send(_conf.get('channel'), "%d" % count)
         count += 1
         await asyncio.sleep(1)
-
