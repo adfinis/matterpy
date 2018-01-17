@@ -117,12 +117,26 @@ REquires the following config:
 .. code:: ini
 
     [plugin matterpy.contrib.jira]
-    
+
     base_url = http://url.to.your.jira
-    
+
     auth = basic
-    
+
     user = jira_username
     pass = jira_password
 
 Note that this plugin is still WIP. I still need to convert the title into a link and convert the description body from textile into markdown (or devise some other plan to handle it). Also, possibly tons of stabilisation etc.
+
+Counter Plugin
+~~~~~~~~~~~~~~
+
+This plugin is just a showcase for how to initialize a module asynchronously, and schedule
+periodic tasks (ie. does not react to user input, but some other trigger).
+
+.. code:: ini
+
+   [plugin matterpy.contrib.counter]
+
+   start_at = 1
+   channel = testing
+
