@@ -140,3 +140,27 @@ periodic tasks (ie. does not react to user input, but some other trigger).
    start_at = 1
    channel = testing
 
+RSS Plugin
+~~~~~~~~~~
+
+Automaticly posts RSS feeds on an set interval into a Mattermost chat of your choice.
+
+For multiple RSS feeds add more of the shown blocks.
+
+The interval is configured in seconds.
+The format configuration is optional.
+
+With the format configuration you can change how the message looks by rearranging them to your liking.
+
+.. code:: ini
+
+    [plugin matterpy.contrib.rss]
+
+    feed.1.channel = channel_name
+    feed.1.url = https://url.to.rss.feed
+    feed.1.interval = 60
+    feed.1.format = {title}, {body}, {url}
+
+    feed.foo.channel = testing
+    feed.foo.url = http://url.to.rss.feed
+    feed.foo.interval = 120

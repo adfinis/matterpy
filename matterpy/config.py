@@ -14,7 +14,7 @@ CONFIG_FILES = [
 class Config(configparser.ConfigParser):
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, interpolation=None, **kwargs)
         self.read(CONFIG_FILES)
 
     def config(self, group, key):
