@@ -20,6 +20,17 @@ for a configuration:
 All those files are parsed (if they exist). If a specific config is not found
 in one of them, then the next file is checked, and so on.
 
+Deployment
+----------
+
+You can just deploy the code as a python wheel package into a virtualenv or
+whatever. Alternateively, there's a Docker image on Dockerhub that you can use.
+Just run it with the config file (see below) mounted into /code/matterpy.ini:
+
+.. code:: bash
+
+   docker run -ti --rm -v $PWD/matterpy.ini:/code/matterpy.ini adfinissygroup/matterpy
+
 Example config
 --------------
 
