@@ -24,7 +24,7 @@ or whatever. Alternateively, there's a Docker image on Dockerhub that
 you can use. Just run it with the config file (see below) mounted into
 /code/matterpy.ini:
 
-``` sourceCode bash
+```bash
 docker run -ti --rm -v $PWD/matterpy.ini:/code/matterpy.ini adfinissygroup/matterpy
 ```
 
@@ -33,11 +33,11 @@ docker run -ti --rm -v $PWD/matterpy.ini:/code/matterpy.ini adfinissygroup/matte
 Here's an example configuration, which configures matterpy to enable
 just the "echo" plugin.
 
-``` sourceCode ini
+```ini
 [DEFAULT]
 username = matterpy
 port     = 8080
-host     = your-public-ip-address
+hlost     = your-public-ip-address
 
 [channel testing]
 incoming = testing
@@ -65,7 +65,7 @@ The callback function will receive the full mattermost message as a
 dict, and a `reply` (async) function as parameters. A simple echo plugin
 could look like this:
 
-``` sourceCode python
+```python
 #!/usr/bin/env python3
 
 _conf = None
@@ -97,7 +97,7 @@ optional, spaces are allowd).
 
 The configuration takes the following keys:
 
-``` sourceCode ini
+```ini
 [plugin matterpy.contrib.redmine]
 redmine_username = api_username
 redmine_password = y0urp@ssw0rd
@@ -113,7 +113,7 @@ displays details about the given ticket.
 
 REquires the following config:
 
-``` sourceCode ini
+```ini
 [plugin matterpy.contrib.jira]
 
 base_url = http://url.to.your.jira
@@ -135,7 +135,7 @@ This plugin is just a showcase for how to initialize a module
 asynchronously, and schedule periodic tasks (ie. does not react to user
 input, but some other trigger).
 
-``` sourceCode ini
+```ini
 [plugin matterpy.contrib.counter]
 
 start_at = 1
@@ -155,7 +155,7 @@ optional.
 With the format configuration you can change how the message looks by
 rearranging them to your liking.
 
-``` sourceCode ini
+```ini
 [plugin matterpy.contrib.rss]
 
 feed.1.channel = channel_name
