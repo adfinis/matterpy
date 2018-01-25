@@ -32,7 +32,7 @@ def init(manager, conf):
 
 async def post_rss(feedinfo):
     last_message = gmtime()
-    format_str   = feedinfo.get('format', "[{title}]({url}), {body}")
+    format_str   = feedinfo.get('format', "### [{title}]({url})\n\n{body}")
     channel      = feedinfo.get('channel')
     url          = feedinfo.get('url')
 
@@ -46,6 +46,8 @@ async def post_rss(feedinfo):
     while True:
         feed = feedparser.parse(url)
 
+        seen_urls = set()
+
         updated = lambda entry: entry.get('published_parsed', entry.get('updated_parsed'))
 
         entries = sorted(
@@ -56,9 +58,10 @@ async def post_rss(feedinfo):
             upd = updated(entry)
             message = post_to_text(entry, format_str)
 
-            if last_message <= upd:
+            if last_message <= upd and entry.link not in seen_urls:
                 await _mgr.send(channel, message)
                 last_message = upd
+                seen_urls.add(entry.link)
 
         await asyncio.sleep(int(feedinfo.get('interval', 60)))
 
