@@ -45,16 +45,20 @@ async def post_rss(feedinfo):
 
     while True:
         feed = feedparser.parse(url)
+
+        updated = lambda entry: entry.get('published_parsed', entry.get('updated_parsed'))
+
         entries = sorted(
             feed.entries,
-            key=lambda entry: entry.published_parsed
+            key=updated
         )
         for entry in entries:
+            upd = updated(entry)
             message = post_to_text(entry, format_str)
 
-            if last_message <= entry.published_parsed:
+            if last_message <= upd:
                 await _mgr.send(channel, message)
-                last_message = entry.published_parsed
+                last_message = upd
 
         await asyncio.sleep(int(feedinfo.get('interval', 60)))
 
