@@ -43,10 +43,10 @@ async def post_rss(feedinfo):
         print("mimimi no url!")
         return
 
+    seen_urls = []
+
     while True:
         feed = feedparser.parse(url)
-
-        seen_urls = set()
 
         updated = lambda entry: entry.get('published_parsed', entry.get('updated_parsed'))
 
@@ -59,9 +59,14 @@ async def post_rss(feedinfo):
             message = post_to_text(entry, format_str)
 
             if last_message <= upd and entry.link not in seen_urls:
+                seen_urls.append(entry.link)
                 await _mgr.send(channel, message)
+
                 last_message = upd
-                seen_urls.add(entry.link)
+
+        # only keep 50 "seen" entries
+        while len(seen_urls) > 50:
+            seen_urls.pop(0)
 
         await asyncio.sleep(int(feedinfo.get('interval', 60)))
 
