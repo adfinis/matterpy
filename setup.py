@@ -22,7 +22,7 @@ with codecs.open(version_file, encoding="UTF-8") as f:
     exec(code)
 
 
-with codecs.open('README.rst', 'r', encoding="UTF-8") as f:
+with codecs.open('README.md', 'r', encoding="UTF-8") as f:
     README_TEXT = f.read()
 
 setup(
@@ -35,7 +35,8 @@ setup(
         ]
     },
     install_requires = [
-        'aiohttp'
+        'aiohttp',
+        'feedparser'
     ],
     author = "Adfinis-SyGroup AG",
     author_email = "https://adfinis-sygroup.ch/",
