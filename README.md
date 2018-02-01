@@ -111,7 +111,7 @@ url     = https://base.url.of.your.redmine
 Upon mention of a Jira issue (such as FOO-123), queries Jira and
 displays details about the given ticket.
 
-REquires the following config:
+Requires the following config:
 
 ```ini
 [plugin matterpy.contrib.jira]
@@ -144,26 +144,27 @@ channel = testing
 
 ### RSS Plugin
 
-Automaticly posts RSS feeds on an set interval into a Mattermost chat of
-your choice.
+Automaticly posts RSS feeds on an set interval into a Mattermost chat of your choice.
 
-For multiple RSS feeds add more of the shown blocks.
+For multiple RSS feeds add more of the shown blocks, the minimum is an RSS url and Mattermost channel name.
 
-The interval is configured in seconds. The format configuration is
-optional.
+Interval is optional and is configured in seconds, it sets how often it should check for updates in the feed.
 
-With the format configuration you can change how the message looks by
-rearranging them to your liking.
+Format is optional and with it you can custmize how the sent message will look like,
+you can add any RSS element the feed has to it.
+If you dont know what kind of elements your feed has let it fail once,
+by defining for example {foo} and it will show you all elements.
+
+Examples:
 
 ```ini
 [plugin matterpy.contrib.rss]
 
 feed.1.channel = channel_name
 feed.1.url = https://url.to.rss.feed
-feed.1.interval = 60
+feed.1.interval = 120
 feed.1.format = {title}, {body}, {url}
 
 feed.foo.channel = testing
 feed.foo.url = http://url.to.rss.feed
-feed.foo.interval = 120
 ```

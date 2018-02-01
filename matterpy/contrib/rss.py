@@ -25,7 +25,7 @@ def init(manager, conf):
             if len(keys) == 3:
                 feedsdict[keys[1]][keys[2]] = _conf.get(key)
             else:
-                print("configuration variable name too short: {}".format(key))
+                print("Configuration variable name too short: {}".format(key))
     for key in feedsdict:
         loop.create_task(post_rss(feedsdict.get(key)))
 
@@ -37,10 +37,10 @@ async def post_rss(feedinfo):
     url          = feedinfo.get('url')
 
     if not channel:
-        print("mimimi no channel!")
+        print("Please specify a Channel!")
         return
     if not url:
-        print("mimimi no url!")
+        print("Please specify a URL!")
         return
 
     seen_urls = []
@@ -54,15 +54,21 @@ async def post_rss(feedinfo):
             feed.entries,
             key=updated
         )
-        for entry in entries:
-            upd = updated(entry)
-            message = post_to_text(entry, format_str)
 
-            if last_message <= upd and entry.link not in seen_urls:
-                seen_urls.append(entry.link)
-                await _mgr.send(channel, message)
+        try:
+            for entry in entries:
+                upd = updated(entry)
+                message = post_to_text(entry, format_str)
 
-                last_message = upd
+                if last_message <= upd and entry.link not in seen_urls:
+                    seen_urls.append(entry.link)
+                    await _mgr.send(channel, message)
+
+                    last_message = upd
+
+        except KeyError:
+            await _mgr.send(channel, 'An Error occured.')
+            break
 
         # only keep 50 "seen" entries
         while len(seen_urls) > 50:
@@ -72,10 +78,18 @@ async def post_rss(feedinfo):
 
 
 def post_to_text(entry, format_string):
-    title = entry.title
-    url   = entry.link
-    body  = entry.description
+    try:
+        return format_string.format(
+            url = entry.link,
+            body = entry.summary,
+            **entry
+        )
 
-    return format_string.format(
-        title=title, url=url, body=body
-    )
+    except KeyError as key_err:
+        print('The key {} you defined in the format option does not exist in this feed.'.format(key_err))
+        print('Availabe Keys are: ')
+        print('url\nbody')
+        for key in entry:
+            print(key)
+
+        raise KeyError
