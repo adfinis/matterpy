@@ -78,13 +78,10 @@ async def post_rss(feedinfo):
 
 
 def post_to_text(entry, format_string):
-    url = entry.link
-    body = entry.summary
-
     try:
         return format_string.format(
-            url=url,
-            body=body,
+            url = entry.link,
+            body = entry.summary,
             **entry
         )
 
