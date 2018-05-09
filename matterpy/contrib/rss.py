@@ -9,6 +9,10 @@ _conf = None
 _mgr = None
 
 
+class WrongKey(Exception):
+    pass
+
+
 def init(manager, conf):
     global _conf
     global _mgr
@@ -46,35 +50,46 @@ async def post_rss(feedinfo):
     seen_urls = []
 
     while True:
-        feed = feedparser.parse(url)
-
-        updated = lambda entry: entry.get('published_parsed', entry.get('updated_parsed'))
-
-        entries = sorted(
-            feed.entries,
-            key=updated
-        )
-
         try:
-            for entry in entries:
-                upd = updated(entry)
-                message = post_to_text(entry, format_str)
+            feed = feedparser.parse(url)
 
-                if last_message <= upd and entry.link not in seen_urls:
-                    seen_urls.append(entry.link)
-                    await _mgr.send(channel, message)
+            updated = lambda entry: entry.get(
+                'published_parsed', entry.get('updated_parsed', gmtime())
+            )
 
-                    last_message = upd
+            entries = sorted(
+                feed.entries,
+                key=updated
+            )
 
-        except KeyError:
-            await _mgr.send(channel, 'An Error occured.')
+            try:
+                for entry in entries:
+                    upd = updated(entry)
+                    message = post_to_text(entry, format_str)
+
+                    if last_message <= upd and entry.link not in seen_urls:
+                        seen_urls.append(entry.link)
+                        await _mgr.send(channel, message)
+
+                        last_message = upd
+
+            except WrongKey:
+                await _mgr.send(
+                    channel, 'There\'s an problem with your Configuration.'
+                )
+                break
+
+            # only keep 50 "seen" entries
+            while len(seen_urls) > 50:
+                seen_urls.pop(0)
+
+            await asyncio.sleep(int(feedinfo.get('interval', 60)))
+
+        except Exception as e:
+            print("An Error occured:")
+            print(e)
+            await _mgr.send(channel, "There was an Error: {}".format(e))
             break
-
-        # only keep 50 "seen" entries
-        while len(seen_urls) > 50:
-            seen_urls.pop(0)
-
-        await asyncio.sleep(int(feedinfo.get('interval', 60)))
 
 
 def post_to_text(entry, format_string):
@@ -92,4 +107,4 @@ def post_to_text(entry, format_string):
         for key in entry:
             print(key)
 
-        raise KeyError
+        raise WrongKey
