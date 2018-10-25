@@ -168,3 +168,33 @@ feed.1.format = {title}, {body}, {url}
 feed.foo.channel = testing
 feed.foo.url = http://url.to.rss.feed
 ```
+
+### Zoho Plugin
+
+Zoho Webhooks are not data-compatible with Mattermost, so we need a
+gateway to reformat what we get.
+
+This adds a generic webhook with a configurable URL. You can then POST
+anything to it with a message parameter (POST data or query string is
+accepted). This will be sent to the configured mattermost channel.
+
+Configure the plugin like this (Assuming you have a "testing" channel
+configured).
+
+Then, create a Webhook in Zoho to point to the matching URL on your server
+(See menu in Setup - Automation - Actions - Webhooks).
+
+The webhook should have a single parameter named "message" under the
+"Parameters in the User Defined Format" section. Put the message with any
+placeholders you like there.
+
+Afterwards, you can create a workflow rule to trigger this webhook according to
+your needs.
+
+```ini
+
+[plugin matterpy.contrib.zoho2mattermost]
+
+listen = /zoho/eemaeg9WahYa7Aelahch
+channel = testing
+```
