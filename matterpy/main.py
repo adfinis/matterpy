@@ -29,6 +29,8 @@ def operate(conf):
     mgr = manager.Manager(conf)
     srv = server.Server(conf, mgr)
 
+    srv.setup_generic(mgr.generic_hooks)
+
     srv.run()
 
     loop = asyncio.get_event_loop()

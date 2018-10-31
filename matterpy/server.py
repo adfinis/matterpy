@@ -21,6 +21,21 @@ class Server():
                                       '/%s' % identifier,
                                       partial(self.handle, channel))
 
+    def setup_generic(self, hooks):
+        """
+        Setup generic webhook callbacks.
+
+        Those should be fed in from the manager in the form of a dict:
+        {(method, url): callback}
+        """
+        for ((method, url), callback) in hooks.items():
+            print(" Generic route: %s" % url)
+            self.app.router.add_route(
+                method,
+                url,
+                callback
+            )
+
     def run(self):
         web.run_app(
             self.app,

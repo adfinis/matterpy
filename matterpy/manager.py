@@ -11,7 +11,8 @@ class Manager():
 
     def __init__(self, conf):
         self.conf = conf
-        self.plugins = []
+        self.message_handlers = []
+        self.generic_hooks = {}
         self.load_plugins()
 
     def load_plugins(self):
@@ -31,13 +32,20 @@ class Manager():
             print("Error during module init: %s" % str(exc))
 
     def register(self, plugin):
-        self.plugins.append(plugin)
+        "Deprecated! Alias for register_"
+        return self.register_message_handler(plugin)
+
+    def register_message_handler(self, plugin):
+        self.message_handlers.append(plugin)
+
+    def register_generic_hook(self, method, url, plugin):
+        self.generic_hooks[(method, url)] = plugin
 
     async def receive(self, channel, data):
         reply = partial(self.send, channel)
-        for plugin in self.plugins:
+        for handler in self.message_handlers:
             try:
-                await plugin(data, reply)
+                await handler(data, reply)
             except Exception as exc:
                 print("Error while handling module: %s %s" % (
                     type(exc), str(exc)))
